@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="603.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.el_cincuentenazo.controlador.ComoJugarController">
+    <children>
+        <Button fx:id="botonRegresar" mnemonicParsing="false" onAction="#manejarBotonRegresar" prefHeight="27.0" prefWidth="39.0" text="←">
+            <font>
+                <Font name="Cooper Black" size="16.0" />
+            </font>
+            <opaqueInsets>
+                <Insets top="5.0" />
+            </opaqueInsets>
+        </Button>
+        <Label alignment="TOP_CENTER" prefHeight="46.0" prefWidth="682.0" text="¿COMO JUGAR?" textFill="RED">
+            <font>
+                <Font name="Cooper Black" size="40.0" />
+            </font>
+        </Label>
+      <ScrollPane prefHeight="310.0" prefWidth="595.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="575.0">
+               <children>
+                  <VBox prefHeight="600.0" prefWidth="576.0">
+                     <children>
+                          <Label prefHeight="52.0" prefWidth="576.0" text="✔El objetivo del juego es hundir toda la flota de barcos de la máquina antes de que ella hunda la tuya, usando dos tableros de 10x10 casillas. " wrapText="true">
+                              <font>
+                                  <Font name="Cooper Black" size="14.0" />
+                              </font>
+                          </Label>
+                          <Label prefHeight="25.0" prefWidth="576.0" text="✔El juego se desarrolla con dos tableros:" wrapText="true">
+                              <font>
+                                  <Font name="Cooper Black" size="14.0" />
+                              </font>
+                          </Label>
+                          <Label prefHeight="38.0" prefWidth="576.0" text="    *Tablero de posición: muestra tu territorio y la ubicación de tus barcos. Aquí solo observas los disparos de la máquina; no puedes disparar ni mover barcos." wrapText="true">
+                              <font>
+                                  <Font name="Cooper Black" size="14.0" />
+                              </font>
+                          </Label>
+                          <Label prefHeight="39.0" prefWidth="576.0" text="    *Tablero principal: muestra el territorio de la máquina. Aquí realizas todos tus disparos para intentar hundir sus barcos." wrapText="true">
+                              <font>
+                                  <Font name="Cooper Black" size="14.0" />
+                              </font>
+                          </Label>
+                        <Label prefHeight="28.0" prefWidth="576.0" text="✔Antes de empezar la partida, debes colocar tu flota en el tablero de posición:" wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="17.0" prefWidth="576.0" text="    *1 portaaviones que ocupa 4 casillas." wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="8.0" prefWidth="576.0" text="    *2 submarinos que ocupan 3 casillas cada uno." wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="4.0" prefWidth="576.0" text="    *3 destructores que ocupan 2 casillas cada uno." wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                          <Label prefHeight="0.0" prefWidth="576.0" text="    *4 fragatas que ocupan 1 casilla cada una." wrapText="true">
+                              <font>
+                                  <Font name="Cooper Black" size="14.0" />
+                              </font>
+                          </Label>
+                          <Label prefHeight="46.0" prefWidth="566.0" text="✓ Los barcos se pueden ubicar horizontal o verticalmente, nunca en diagonal. No pueden quedar por fuera del tablero ni superpuestos entre sí." wrapText="true">
+                              <font>
+                                  <Font name="Cooper Black" size="14.0" />
+                              </font>
+                          </Label>
+                        <Label prefHeight="40.0" prefWidth="566.0" text="✓ Cuando terminas de ubicar todos tus barcos, inicia la partida y ya no podrás moverlos ni modificarlos." wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="26.0" prefWidth="566.0" text="✓En tu turno, eliges una casilla del tablero principal para disparar:" wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="37.0" prefWidth="566.0" text="    *Si en esa casilla no hay barco enemigo, es AGUA: se marca con una “X” y el turno pasa a la máquina." wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="36.0" prefWidth="566.0" text="    *Si golpeas una parte de un barco que ocupa 2 o más casillas, es TOCADO: se marca la sección impactada y puedes volver a disparar." wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="566.0" text="    *Si destruyes la última casilla que quedaba de un barco, es HUNDIDO: el barco se marca completo como hundido y sigues disparando mientras queden barcos enemigos." wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="47.0" prefWidth="566.0" text="✓Después de tu turno, la máquina dispara automáticamente sobre tu tablero de posición, usando las mismas reglas de agua, tocado y hundido." wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="49.0" prefWidth="566.0" text="✓Gana la partida el primer jugador (tú o la máquina) que logre hundir todos los barcos de la flota enemiga." wrapText="true">
+                           <font>
+                              <Font name="Cooper Black" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+    </children>
+    <padding>
+        <Insets left="5.0" top="5.0" />
+    </padding>
+</VBox>
