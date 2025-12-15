@@ -1,151 +1,247 @@
-package com.example.batalla_naval.logica; // paquete de la fachada
+package com.example.batalla_naval.logica;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList; // importa ArrayList para listas rápidas
-import java.util.List; // interfaz de lista
-import java.util.Stack; // pila para unir historiales
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
-public class FachadaJuego implements Serializable { // clase que implementa el patrón Facade
-    private final JugadorHumano jugador; // referencia al jugador humano
-    private final Maquina maquina; // referencia a la máquina
-    private boolean partidaIniciada; // bandera para indicar si la partida empezó
-    private boolean turnoJugador; // bandera del turno actual
-    private final List<Disparo> historialGlobal; // lista secuencial con todos los disparos
+/**
+ * Fachada del juego que coordina las acciones entre el jugador humano, la
+ * máquina y los historiales de disparos.
+ */
+public class FachadaJuego implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public FachadaJuego() { // constructor sin parámetros
-        jugador = new JugadorHumano(); // crea al jugador humano
-        maquina = new Maquina(); // crea a la máquina
-        partidaIniciada = false; // marca que aún no inicia la partida
-        turnoJugador = true; // por defecto el primer turno es del jugador
-        historialGlobal = new ArrayList<>(); // inicializa el historial global en orden secuencial
-    } // cierra el constructor
+    /** Jugador controlado por la persona. */
+    private final JugadorHumano jugador;
+    /** Oponente controlado por la aplicación. */
+    private final Maquina maquina;
+    /** Indicador de que la partida ya comenzó. */
+    private boolean partidaIniciada;
+    /** Indica si actualmente juega el usuario. */
+    private boolean turnoJugador;
+    /** Historial secuencial de todos los disparos realizados. */
+    private final List<Disparo> historialGlobal;
 
-    public void iniciarNuevaPartida() { // método de alto nivel para arrancar la partida
-        maquina.prepararFlotaAleatoria(); // coloca la flota de la máquina de forma aleatoria usando Factory Method
-        partidaIniciada = false; // asegura que la partida comience en modo de colocación
-        turnoJugador = true; // define que el turno inicial será del jugador
-        historialGlobal.clear(); // limpia el historial global para la nueva partida
-        // TODO HU-6: aquí se podría cargar desde archivo una partida previa antes de crear la nueva
-    } // cierra iniciarNuevaPartida
+    /**
+     * Crea la fachada inicializando el jugador humano, la máquina y los
+     * historiales necesarios.
+     */
+    public FachadaJuego() {
+        jugador = new JugadorHumano();
+        maquina = new Maquina();
+        partidaIniciada = false;
+        turnoJugador = true;
+        historialGlobal = new ArrayList<>();
+    }
 
-    public boolean isPartidaIniciada() { // indica si la partida ya inició
-        return partidaIniciada; // retorna la bandera
-    } // cierra isPartidaIniciada
+    /**
+     * Prepara una partida nueva colocando la flota de la máquina y limpiando
+     * los historiales.
+     */
+    public void iniciarNuevaPartida() {
+        maquina.prepararFlotaAleatoria();
+        partidaIniciada = false;
+        turnoJugador = true;
+        historialGlobal.clear();
+    }
 
-    public boolean isTurnoJugador() { // indica si es turno del jugador
-        return turnoJugador; // retorna la bandera
-    } // cierra isTurnoJugador
+    /**
+     * Indica si la partida ya se encuentra activa.
+     *
+     * @return {@code true} si la partida está en curso
+     */
+    public boolean isPartidaIniciada() {
+        return partidaIniciada;
+    }
 
-    public JugadorHumano getJugador() { // getter del jugador
-        return jugador; // retorna la referencia
-    } // cierra getJugador
+    /**
+     * Indica si el siguiente turno corresponde al jugador humano.
+     *
+     * @return {@code true} cuando debe disparar el usuario
+     */
+    public boolean isTurnoJugador() {
+        return turnoJugador;
+    }
 
-    public Maquina getMaquina() { // getter de la máquina
-        return maquina; // retorna la referencia
-    } // cierra getMaquina
+    /**
+     * Obtiene la instancia del jugador humano.
+     *
+     * @return el jugador humano
+     */
+    public JugadorHumano getJugador() {
+        return jugador;
+    }
 
-    public void colocarBarcoJugador(TipoBarco tipo, Coordenada inicio) throws PosicionInvalidaException { // coloca un barco del jugador
-        if (partidaIniciada) { // si la partida ya inició
-            throw new PosicionInvalidaException("No se pueden mover barcos después de iniciar"); // lanza excepción
-        } // cierra if
-        if (contarBarcosJugador(tipo) >= limitePorTipo(tipo)) { // verifica si ya se alcanzó el máximo del tipo
-            throw new PosicionInvalidaException("Ya se colocaron todos los barcos de este tipo"); // avisa que no se pueden agregar más
-        } // cierra if
-        // ⭐⭐ USO DEL FACTORY METHOD: obtener fábrica concreta y crear barco
-        FabricaBarcos fabrica = obtenerFabricaPorTipo(tipo); // obtiene la fábrica concreta para el tipo
-        Barco barco = fabrica.crearBarcoCompleto(); // usa el método template del Factory Method para crear el barco
-        jugador.colocarBarco(barco, inicio); // delega la colocación al jugador
-    } // cierra colocarBarcoJugador
+    /**
+     * Obtiene la instancia de la máquina rival.
+     *
+     * @return la máquina que actúa como oponente
+     */
+    public Maquina getMaquina() {
+        return maquina;
+    }
 
-    public void iniciarPartida() { // cambia el estado a partida activa
-        partidaIniciada = true; // habilita la fase de disparos
-    } // cierra iniciarPartida
+    /**
+     * Coloca un barco del jugador humano en la posición indicada.
+     *
+     * @param tipo    tipo de barco solicitado
+     * @param inicio  coordenada inicial donde debe ubicarse
+     * @throws PosicionInvalidaException si la partida ya comenzó o se supera el
+     *                                   límite de barcos por tipo
+     */
+    public void colocarBarcoJugador(TipoBarco tipo, Coordenada inicio) throws PosicionInvalidaException {
+        if (partidaIniciada) {
+            throw new PosicionInvalidaException("No se pueden mover barcos después de iniciar");
+        }
+        if (contarBarcosJugador(tipo) >= limitePorTipo(tipo)) {
+            throw new PosicionInvalidaException("Ya se colocaron todos los barcos de este tipo");
+        }
+        FabricaBarcos fabrica = obtenerFabricaPorTipo(tipo);
+        Barco barco = fabrica.crearBarcoCompleto();
+        jugador.colocarBarco(barco, inicio);
+    }
 
-    public EnumResultadoDisparo dispararJugador(Coordenada coordenada) { // procesa un disparo del jugador contra la máquina
-        EnumResultadoDisparo resultado = jugador.disparar(maquina.getTableroPosicion(), coordenada); // realiza el disparo
-        historialGlobal.add(jugador.getHistorialDisparos().peek()); // agrega el disparo al historial secuencial
-        if (resultado == EnumResultadoDisparo.AGUA) { // si fue agua
-            turnoJugador = false; // cede el turno a la máquina
-        } // cierra if
-        return resultado; // devuelve el resultado al controlador
-    } // cierra dispararJugador
+    /**
+     * Activa la fase de disparos indicando que la partida se encuentra en
+     * progreso.
+     */
+    public void iniciarPartida() {
+        partidaIniciada = true;
+    }
 
-    public List<EnumResultadoDisparo> dispararMaquinaTurnoCompleto() { // dispara hasta que la máquina falle
-        turnoJugador = false; // marca que la máquina está ejecutando su turno completo
-        List<EnumResultadoDisparo> resultados = new ArrayList<>(); // lista para acumular resultados en orden
-        EnumResultadoDisparo resultado; // variable para guardar cada resultado individual
-        do { // ciclo que repite mientras la máquina siga acertando
-            resultado = maquina.disparar(jugador); // dispara contra el jugador
-            historialGlobal.add(maquina.getHistorial().peek()); // agrega el disparo de la máquina al historial secuencial
-            resultados.add(resultado); // guarda el resultado del disparo actual
-        } while (resultado != EnumResultadoDisparo.AGUA && !verificarFinDePartida()); // si acierta y no termina la partida continúa
-        turnoJugador = true; // devuelve el turno al jugador después del ciclo
-        return resultados; // retorna la lista de resultados para ser procesados en la vista
-    } // cierra dispararMaquinaTurnoCompleto
+    /**
+     * Procesa el disparo del jugador humano contra la flota de la máquina.
+     *
+     * @param coordenada ubicación objetivo del disparo
+     * @return resultado obtenido tras el disparo
+     */
+    public EnumResultadoDisparo dispararJugador(Coordenada coordenada) {
+        EnumResultadoDisparo resultado = jugador.disparar(maquina.getTableroPosicion(), coordenada);
+        historialGlobal.add(jugador.getHistorialDisparos().peek());
+        if (resultado == EnumResultadoDisparo.AGUA) {
+            turnoJugador = false;
+        }
+        return resultado;
+    }
 
-    public boolean verificarFinDePartida() { // verifica si alguien ganó
-        return jugador.getTableroPosicion().estanTodosLosBarcosHundidos() || maquina.getTableroPosicion().estanTodosLosBarcosHundidos(); // retorna true si algún tablero quedó sin barcos
-    } // cierra verificarFinDePartida
+    /**
+     * Ejecuta el turno completo de la máquina disparando hasta fallar o hasta
+     * que termine la partida.
+     *
+     * @return lista de resultados generados por cada disparo de la máquina
+     */
+    public List<EnumResultadoDisparo> dispararMaquinaTurnoCompleto() {
+        turnoJugador = false;
+        List<EnumResultadoDisparo> resultados = new ArrayList<>();
+        EnumResultadoDisparo resultado;
+        do {
+            resultado = maquina.disparar(jugador);
+            historialGlobal.add(maquina.getHistorial().peek());
+            resultados.add(resultado);
+        } while (resultado != EnumResultadoDisparo.AGUA && !verificarFinDePartida());
+        turnoJugador = true;
+        return resultados;
+    }
 
-    public List<Disparo> obtenerHistorial() { // arma una lista con todos los disparos
-        return new ArrayList<>(historialGlobal); // retorna una copia del historial en orden secuencial
-    } // cierra obtenerHistorial
+    /**
+     * Verifica si alguna de las flotas ya fue destruida por completo.
+     *
+     * @return {@code true} cuando el juego termina
+     */
+    public boolean verificarFinDePartida() {
+        return jugador.getTableroPosicion().estanTodosLosBarcosHundidos()
+                || maquina.getTableroPosicion().estanTodosLosBarcosHundidos();
+    }
 
-    public Stack<Disparo> historialJugador() { // retorna la pila del jugador
-        return jugador.getHistorialDisparos(); // devuelve la referencia
-    } // cierra historialJugador
+    /**
+     * Obtiene el historial combinado de disparos realizados por ambos
+     * participantes.
+     *
+     * @return copia del historial global en orden secuencial
+     */
+    public List<Disparo> obtenerHistorial() {
+        return new ArrayList<>(historialGlobal);
+    }
 
-    public Stack<Disparo> historialMaquina() { // retorna la pila de la máquina
-        return maquina.getHistorial(); // devuelve la referencia
-    } // cierra historialMaquina
+    /**
+     * Devuelve el historial individual del jugador humano.
+     *
+     * @return pila de disparos del jugador
+     */
+    public Stack<Disparo> historialJugador() {
+        return jugador.getHistorialDisparos();
+    }
 
-    private int contarBarcosJugador(TipoBarco tipo) { // cuenta cuántos barcos de un tipo tiene el jugador
-        int contador = 0; // inicia contador en cero
-        for (Barco barco : jugador.getFlota()) { // recorre la flota actual
-            if (tipo == TipoBarco.PORTAAVIONES && barco instanceof Portaaviones) { // verifica si es portaaviones
-                contador++; // suma al contador
-            } else if (tipo == TipoBarco.SUBMARINO && barco instanceof Submarino) { // verifica submarino
-                contador++; // suma al contador
-            } else if (tipo == TipoBarco.DESTRUCTOR && barco instanceof Destructor) { // verifica destructor
-                contador++; // suma al contador
-            } else if (tipo == TipoBarco.FRAGATA && barco instanceof Fragata) { // verifica fragata
-                contador++; // suma al contador
-            } // cierra if encadenado
-        } // cierra for
-        return contador; // retorna el total encontrado
-    } // cierra contarBarcosJugador
+    /**
+     * Devuelve el historial individual de la máquina.
+     *
+     * @return pila de disparos de la máquina
+     */
+    public Stack<Disparo> historialMaquina() {
+        return maquina.getHistorial();
+    }
 
-    private int limitePorTipo(TipoBarco tipo) { // devuelve el máximo permitido por tipo
-        switch (tipo) { // revisa el enum recibido
-            case PORTAAVIONES: // para portaaviones
-                return 1; // solo uno permitido
-            case SUBMARINO: // para submarinos
-                return 2; // dos permitidos
-            case DESTRUCTOR: // para destructores
-                return 3; // tres permitidos
-            case FRAGATA: // para fragatas
-                return 4; // cuatro permitidas
-            default: // caso por defecto que no debería ocurrir
-                return 0; // retorna cero
-        } // cierra switch
-    } // cierra limitePorTipo
+/**
+ * Descripción para contarBarcosJugador.
+ * @param tipo parámetro de entrada.
+ * @return valor resultante.
+ */
+    private int contarBarcosJugador(TipoBarco tipo) {
+        int contador = 0;
+        for (Barco barco : jugador.getFlota()) {
+            if (tipo == TipoBarco.PORTAAVIONES && barco instanceof Portaaviones) {
+                contador++;
+            } else if (tipo == TipoBarco.SUBMARINO && barco instanceof Submarino) {
+                contador++;
+            } else if (tipo == TipoBarco.DESTRUCTOR && barco instanceof Destructor) {
+                contador++;
+            } else if (tipo == TipoBarco.FRAGATA && barco instanceof Fragata) {
+                contador++;
+            }
+        }
+        return contador;
+    }
 
-    // ⭐⭐ NUEVO MÉTODO: Obtener la fábrica concreta según el tipo de barco (Factory Method)
-    private FabricaBarcos obtenerFabricaPorTipo(TipoBarco tipo) { // selecciona la implementación concreta del Factory Method
-        switch (tipo) { // evalúa el tipo de barco
-            case PORTAAVIONES: // si es portaaviones
-                return new FabricaPortaaviones(); // retorna fábrica concreta para portaaviones
-            case SUBMARINO: // si es submarino
-                return new FabricaSubmarino(); // retorna fábrica concreta para submarinos
-            case DESTRUCTOR: // si es destructor
-                return new FabricaDestructor(); // retorna fábrica concreta para destructores
-            case FRAGATA: // si es fragata
-                return new FabricaFragata(); // retorna fábrica concreta para fragatas
-            default: // por defecto
-                throw new IllegalArgumentException("Tipo de barco no soportado: " + tipo); // lanza excepción
-        } // cierra switch
-    } // cierra obtenerFabricaPorTipo
-} // cierra la clase FachadaJuego
+/**
+ * Descripción para limitePorTipo.
+ * @param tipo parámetro de entrada.
+ * @return valor resultante.
+ */
+    private int limitePorTipo(TipoBarco tipo) {
+        switch (tipo) {
+            case PORTAAVIONES:
+                return 1;
+            case SUBMARINO:
+                return 2;
+            case DESTRUCTOR:
+                return 3;
+            case FRAGATA:
+                return 4;
+            default:
+                return 0;
+        }
+    }
+
+/**
+ * Descripción para obtenerFabricaPorTipo.
+ * @param tipo parámetro de entrada.
+ * @return valor resultante.
+ */
+    private FabricaBarcos obtenerFabricaPorTipo(TipoBarco tipo) {
+        switch (tipo) {
+            case PORTAAVIONES:
+                return new FabricaPortaaviones();
+            case SUBMARINO:
+                return new FabricaSubmarino();
+            case DESTRUCTOR:
+                return new FabricaDestructor();
+            case FRAGATA:
+                return new FabricaFragata();
+            default:
+                throw new IllegalArgumentException("Tipo de barco no soportado: " + tipo);
+        }
+    }
+}

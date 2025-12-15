@@ -3,11 +3,14 @@ package com.example.batalla_naval.persistencia;
 import com.example.batalla_naval.logica.*;
 import java.io.*;
 
+/**
+ * Clase GestorPartida de la aplicación Batalla Naval.
+ */
 public class GestorPartida {
     private static final String DIRECTORIO_PARTIDAS = "partidas_guardadas/";
 
     static {
-        // Crear directorio si no existe
+
         File directorio = new File(DIRECTORIO_PARTIDAS);
         if (!directorio.exists()) {
             directorio.mkdirs();
@@ -88,7 +91,7 @@ public class GestorPartida {
 
         String[] nombresPartidas = new String[archivos.length];
         for (int i = 0; i < archivos.length; i++) {
-            // Quitar la extensión .dat
+
             nombresPartidas[i] = archivos[i].getName()
                     .replace(".dat", "");
         }

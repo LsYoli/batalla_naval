@@ -1,6 +1,9 @@
-package com.example.batalla_naval.logica; // define el paquete de la enumeración
+package com.example.batalla_naval.logica;
 
-public enum EnumOrientacion { // enum para controlar la orientación de un barco
-    HORIZONTAL, // opción horizontal
-    VERTICAL // opción vertical
-} // cierra el enum
+/**
+ * Clase EnumOrientacion de la aplicación Batalla Naval.
+ */
+public enum EnumOrientacion {
+    HORIZONTAL,
+    VERTICAL
+}

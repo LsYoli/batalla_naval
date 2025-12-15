@@ -1,36 +1,62 @@
-package com.example.batalla_naval.logica; // paquete de la clase Disparo
+package com.example.batalla_naval.logica;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Disparo implements Serializable { // clase que modela un disparo realizado
-    private final int numero; // número consecutivo del disparo
-    private final String jugador; // nombre del jugador que disparó
-    private final Coordenada coordenada; // coordenada del disparo
-    private final EnumResultadoDisparo resultado; // resultado obtenido
+/**
+ * Clase Disparo de la aplicación Batalla Naval.
+ */
+public class Disparo implements Serializable {
+    private final int numero;
+    private final String jugador;
+    private final Coordenada coordenada;
+    private final EnumResultadoDisparo resultado;
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public Disparo(int numero, String jugador, Coordenada coordenada, EnumResultadoDisparo resultado) { // constructor que recibe datos del disparo
-        this.numero = numero; // asigna el número
-        this.jugador = jugador; // asigna el jugador
-        this.coordenada = coordenada; // asigna la coordenada
-        this.resultado = resultado; // asigna el resultado
-    } // cierra el constructor
+/**
+ * Descripción para Disparo.
+ * @param numero parámetro de entrada.
+ * @param jugador parámetro de entrada.
+ * @param coordenada parámetro de entrada.
+ * @param resultado parámetro de entrada.
+ */
+    public Disparo(int numero, String jugador, Coordenada coordenada, EnumResultadoDisparo resultado) {
+        this.numero = numero;
+        this.jugador = jugador;
+        this.coordenada = coordenada;
+        this.resultado = resultado;
+    }
 
-    public int getNumero() { // getter de número
-        return numero; // devuelve el número
-    } // cierra getNumero
+/**
+ * Descripción para getNumero.
+ * @return valor resultante.
+ */
+    public int getNumero() {
+        return numero;
+    }
 
-    public String getJugador() { // getter de jugador
-        return jugador; // devuelve el jugador
-    } // cierra getJugador
+/**
+ * Descripción para getJugador.
+ * @return valor resultante.
+ */
+    public String getJugador() {
+        return jugador;
+    }
 
-    public Coordenada getCoordenada() { // getter de coordenada
-        return coordenada; // devuelve la coordenada
-    } // cierra getCoordenada
+/**
+ * Descripción para getCoordenada.
+ * @return valor resultante.
+ */
+    public Coordenada getCoordenada() {
+        return coordenada;
+    }
 
-    public EnumResultadoDisparo getResultado() { // getter de resultado
-        return resultado; // devuelve el resultado
-    } // cierra getResultado
-} // cierra la clase Disparo
+/**
+ * Descripción para getResultado.
+ * @return valor resultante.
+ */
+    public EnumResultadoDisparo getResultado() {
+        return resultado;
+    }
+}

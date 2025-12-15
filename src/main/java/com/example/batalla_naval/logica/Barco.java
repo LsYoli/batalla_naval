@@ -1,53 +1,146 @@
-package com.example.batalla_naval.logica; // paquete de la clase Barco
+package com.example.batalla_naval.logica;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList; // importa ArrayList para las celdas ocupadas
-import java.util.List; // importa List para la interfaz de la colección
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class Barco  implements Serializable { // clase abstracta base para cualquier barco
-    protected int tamano; // tamaño del barco en casillas
-    protected EnumOrientacion orientacion; // orientación del barco
-    protected List<Celda> celdasOcupadas; // lista de celdas que ocupa
-    protected int impactos; // contador de impactos recibidos
-    protected String nombre; // nombre simple del barco
+/**
+ * Representa un barco dentro del juego, gestionando su tamaño, orientación y
+ * celdas ocupadas.
+ */
+public abstract class Barco implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public Barco(int tamano, String nombre) { // constructor que recibe tamaño y nombre
-        this.tamano = tamano; // asigna el tamaño
-        this.nombre = nombre; // asigna el nombre
-        this.celdasOcupadas = new ArrayList<>(); // inicializa la lista con ArrayList
-        this.impactos = 0; // inicia el contador de impactos
-        this.orientacion = EnumOrientacion.HORIZONTAL; // orientación por defecto
-    } // cierra el constructor
+    /** Número de celdas que ocupa el barco. */
+    protected int tamano;
+    /** Orientación actual del barco. */
+    protected EnumOrientacion orientacion;
+    /** Fila inicial asignada al barco. */
+    protected int filaInicial;
+    /** Columna inicial asignada al barco. */
+    protected int columnaInicial;
+    /** Celdas ocupadas por el barco en el tablero. */
+    protected List<Celda> celdasOcupadas;
+    /** Cantidad de impactos recibidos. */
+    protected int impactos;
+    /** Nombre descriptivo del barco. */
+    protected String nombre;
 
-    public void asignarOrientacion(EnumOrientacion orientacion) { // método para setear la orientación
-        this.orientacion = orientacion; // guarda la orientación elegida
-    } // cierra asignarOrientacion
+    /**
+     * Crea un barco indicando su tamaño y nombre.
+     *
+     * @param tamano número de celdas que ocupa
+     * @param nombre etiqueta descriptiva del barco
+     */
+    public Barco(int tamano, String nombre) {
+        this.tamano = tamano;
+        this.nombre = nombre;
+        this.celdasOcupadas = new ArrayList<>();
+        this.impactos = 0;
+        this.orientacion = EnumOrientacion.HORIZONTAL;
+    }
 
-    public void agregarCelda(Celda celda) { // agrega una celda a la lista ocupada
-        celdasOcupadas.add(celda); // añade la celda a la colección
-        celda.setBarco(this); // asocia la celda al barco
-    } // cierra agregarCelda
+    /**
+     * Registra la posición inicial del barco en el tablero.
+     *
+     * @param fila    fila inicial
+     * @param columna columna inicial
+     */
+    public void setPosicionInicial(int fila, int columna) {
+        this.filaInicial = fila;
+        this.columnaInicial = columna;
+    }
 
-    public int getTamano() { // getter de tamaño
-        return tamano; // devuelve el tamaño
-    } // cierra getTamano
+    /**
+     * Obtiene la fila inicial definida para el barco.
+     *
+     * @return fila inicial
+     */
+    public int getFilaInicial() {
+        return filaInicial;
+    }
 
-    public String getNombre() { // getter de nombre
-        return nombre; // devuelve el nombre del barco
-    } // cierra getNombre
+    /**
+     * Obtiene la columna inicial definida para el barco.
+     *
+     * @return columna inicial
+     */
+    public int getColumnaInicial() {
+        return columnaInicial;
+    }
 
-    public List<Celda> getCeldasOcupadas() { // devuelve las celdas ocupadas
-        return celdasOcupadas; // retorna la lista
-    } // cierra getCeldasOcupadas
+    /**
+     * Devuelve la orientación actual del barco.
+     *
+     * @return orientación del barco
+     */
+    public EnumOrientacion getOrientacion() {
+        return orientacion;
+    }
 
-    public void registrarImpacto(Celda celda) { // registra que el barco fue golpeado
-        impactos++; // incrementa el contador de impactos
-    } // cierra registrarImpacto
+    /**
+     * Asigna la orientación del barco.
+     *
+     * @param orientacion orientación deseada
+     */
+    public void asignarOrientacion(EnumOrientacion orientacion) {
+        this.orientacion = orientacion;
+    }
 
-    public boolean estaHundido() { // verifica si el barco está hundido
-        return impactos >= tamano; // retorna true si los impactos cubren el tamaño
-    } // cierra estaHundido
-} // cierra la clase Barco
+    /**
+     * Agrega una celda al barco y registra la relación en ambas direcciones.
+     *
+     * @param celda celda ocupada por el barco
+     */
+    public void agregarCelda(Celda celda) {
+        celdasOcupadas.add(celda);
+        celda.setBarco(this);
+    }
+
+    /**
+     * Obtiene el tamaño del barco.
+     *
+     * @return número de celdas ocupadas
+     */
+    public int getTamano() {
+        return tamano;
+    }
+
+    /**
+     * Obtiene el nombre del barco.
+     *
+     * @return nombre descriptivo
+     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     * Devuelve las celdas ocupadas por el barco.
+     *
+     * @return lista de celdas
+     */
+    public List<Celda> getCeldasOcupadas() {
+        return celdasOcupadas;
+    }
+
+    /**
+     * Registra un impacto recibido en el barco.
+     *
+     * @param celda celda alcanzada
+     */
+    public void registrarImpacto(Celda celda) {
+        impactos++;
+    }
+
+    /**
+     * Determina si el barco está completamente hundido.
+     *
+     * @return {@code true} si los impactos alcanzan su tamaño
+     */
+    public boolean estaHundido() {
+        return impactos >= tamano;
+    }
+}

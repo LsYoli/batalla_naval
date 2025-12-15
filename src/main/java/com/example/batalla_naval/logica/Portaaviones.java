@@ -1,7 +1,13 @@
-package com.example.batalla_naval.logica; // paquete de la clase Portaaviones
+package com.example.batalla_naval.logica;
 
-public class Portaaviones extends Barco { // clase concreta para portaaviones
-    public Portaaviones() { // constructor sin parámetros
-        super(4, "Portaaviones"); // llama al constructor padre con tamaño 4
-    } // cierra el constructor
-} // cierra la clase Portaaviones
+/**
+ * Clase Portaaviones de la aplicación Batalla Naval.
+ */
+public class Portaaviones extends Barco {
+/**
+ * Descripción para Portaaviones.
+ */
+    public Portaaviones() {
+        super(4, "Portaaviones");
+    }
+}
