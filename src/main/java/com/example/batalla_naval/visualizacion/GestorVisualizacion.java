@@ -14,7 +14,7 @@ import javafx.scene.text.TextAlignment;
  */
 public class GestorVisualizacion {
 
-    // =========== BARCOS ===========
+
 
     /**
      * Crea un barco visual basado en su tamaño
@@ -37,21 +37,21 @@ public class GestorVisualizacion {
     private static Group crearFragata() {
         Group grupo = new Group();
 
-        // Casco principal (rectángulo redondeado)
+
         Rectangle casco = new Rectangle(10, 22);
-        casco.setFill(Color.web("#1a472a")); // Verde oscuro militar
+        casco.setFill(Color.web("#1a472a"));
         casco.setStroke(Color.web("#0d2415"));
         casco.setStrokeWidth(1.5);
         casco.setArcWidth(4);
         casco.setArcHeight(4);
 
-        // Vela/mástil (triángulo pequeño)
+
         Polygon vela = new Polygon(10, 2, 14, 10, 6, 10);
-        vela.setFill(Color.web("#d4a574")); // Beige
+        vela.setFill(Color.web("#d4a574"));
         vela.setStroke(Color.web("#8b6f47"));
         vela.setStrokeWidth(1);
 
-        // Posicionar vela en el centro del casco
+
         vela.setTranslateY(3);
         vela.setTranslateX(2);
 
@@ -65,7 +65,7 @@ public class GestorVisualizacion {
     private static Group crearDestructor() {
         Group grupo = new Group();
 
-        // Casco principal (rectángulo largo)
+
         Rectangle casco = new Rectangle(26, 22);
         casco.setFill(Color.web("#2d5a3d"));
         casco.setStroke(Color.web("#1a2f22"));
@@ -73,7 +73,7 @@ public class GestorVisualizacion {
         casco.setArcWidth(3);
         casco.setArcHeight(3);
 
-        // Vela delantera
+
         Polygon vela1 = new Polygon(5, 2, 9, 10, 2, 10);
         vela1.setFill(Color.web("#e8b896"));
         vela1.setStroke(Color.web("#8b6f47"));
@@ -81,7 +81,7 @@ public class GestorVisualizacion {
         vela1.setTranslateX(3);
         vela1.setTranslateY(2);
 
-        // Vela trasera (más pequeña)
+
         Polygon vela2 = new Polygon(18, 3, 21, 9, 15, 9);
         vela2.setFill(Color.web("#d4a574"));
         vela2.setStroke(Color.web("#8b6f47"));
@@ -99,24 +99,24 @@ public class GestorVisualizacion {
     private static Group crearSubmarino() {
         Group grupo = new Group();
 
-        // Casco principal (cuerpo del submarino)
+
         Ellipse casco = new Ellipse(14, 10);
         casco.setFill(Color.web("#1a472a"));
         casco.setStroke(Color.web("#0d2415"));
         casco.setStrokeWidth(1.5);
 
-        // Periscopio (línea vertical)
+
         Line periscopio = new Line(10, 0, 10, 6);
         periscopio.setStroke(Color.web("#3d5a47"));
         periscopio.setStrokeWidth(2);
 
-        // Cabeza del periscopio (pequeño círculo)
+
         Circle cabezaPeriscopio = new Circle(10, 0, 2);
         cabezaPeriscopio.setFill(Color.web("#555555"));
         cabezaPeriscopio.setStroke(Color.web("#333333"));
         cabezaPeriscopio.setStrokeWidth(0.5);
 
-        // Velas (2 pequeñas aletas)
+
         Polygon ala1 = new Polygon(5, 9, 8, 12, 2, 12);
         ala1.setFill(Color.web("#2d5a3d"));
         ala1.setStroke(Color.web("#1a2f22"));
@@ -137,7 +137,7 @@ public class GestorVisualizacion {
     private static Group crearPortaaviones() {
         Group grupo = new Group();
 
-        // Casco principal (rectángulo grande)
+
         Rectangle casco = new Rectangle(28, 22);
         casco.setFill(Color.web("#3d5a47"));
         casco.setStroke(Color.web("#1a2f22"));
@@ -145,7 +145,7 @@ public class GestorVisualizacion {
         casco.setArcWidth(2);
         casco.setArcHeight(2);
 
-        // Torre de control (puente)
+
         Rectangle puente = new Rectangle(8, 8);
         puente.setFill(Color.web("#5a7a6a"));
         puente.setStroke(Color.web("#1a2f22"));
@@ -153,14 +153,14 @@ public class GestorVisualizacion {
         puente.setTranslateX(18);
         puente.setTranslateY(2);
 
-        // Antena (línea con punto)
+
         Line antena = new Line(22, 2, 22, -2);
         antena.setStroke(Color.web("#999999"));
         antena.setStrokeWidth(1.5);
         antena.setTranslateX(18);
         antena.setTranslateY(3);
 
-        // Velas múltiples (3 velas)
+
         Polygon vela1 = new Polygon(3, 2, 7, 10, 0, 10);
         vela1.setFill(Color.web("#e8b896"));
         vela1.setStroke(Color.web("#8b6f47"));
@@ -183,7 +183,7 @@ public class GestorVisualizacion {
         return grupo;
     }
 
-    // =========== RESULTADOS DE DISPAROS ===========
+
 
     /**
      * Marca para AGUA: círculo azul con onda
@@ -191,13 +191,13 @@ public class GestorVisualizacion {
     public static Group crearMarcaAgua() {
         Group grupo = new Group();
 
-        // Círculo base azul
+
         Circle circulo = new Circle(15, 15, 6);
         circulo.setFill(Color.web("#4da6ff"));
         circulo.setStroke(Color.web("#0066cc"));
         circulo.setStrokeWidth(1.5);
 
-        // Ondas concéntricas
+
         Circle onda1 = new Circle(15, 15, 9);
         onda1.setFill(Color.TRANSPARENT);
         onda1.setStroke(Color.web("#0066cc"));
@@ -220,13 +220,13 @@ public class GestorVisualizacion {
     public static Group crearMarcaTocado() {
         Group grupo = new Group();
 
-        // Círculo rojo central (explosión)
+
         Circle explosion = new Circle(15, 15, 5);
         explosion.setFill(Color.web("#ff4444"));
         explosion.setStroke(Color.web("#cc0000"));
         explosion.setStrokeWidth(1.5);
 
-        // Radiación (8 líneas)
+
         for (int i = 0; i < 8; i++) {
             double angulo = (i * Math.PI) / 4;
             double x1 = 15 + 7 * Math.cos(angulo);
@@ -240,7 +240,7 @@ public class GestorVisualizacion {
             grupo.getChildren().add(linea);
         }
 
-        // Anillo exterior
+
         Circle anillo = new Circle(15, 15, 10);
         anillo.setFill(Color.TRANSPARENT);
         anillo.setStroke(Color.web("#ff4444"));
@@ -257,19 +257,19 @@ public class GestorVisualizacion {
     public static Group crearMarcaHundido() {
         Group grupo = new Group();
 
-        // Calavera principal (círculo)
+
         Circle calavera = new Circle(15, 12, 6);
         calavera.setFill(Color.web("#cccccc"));
         calavera.setStroke(Color.web("#333333"));
         calavera.setStrokeWidth(1.5);
 
-        // Mandíbula
+
         Rectangle mandibula = new Rectangle(9, 18, 12, 4);
         mandibula.setFill(Color.web("#bbbbbb"));
         mandibula.setStroke(Color.web("#333333"));
         mandibula.setStrokeWidth(1);
 
-        // Cuencas de los ojos (X)
+
         Line ojo1a = new Line(11, 9, 13, 11);
         ojo1a.setStroke(Color.web("#333333"));
         ojo1a.setStrokeWidth(1.5);
@@ -284,7 +284,7 @@ public class GestorVisualizacion {
         ojo2b.setStroke(Color.web("#333333"));
         ojo2b.setStrokeWidth(1.5);
 
-        // Huesos cruzados detrás
+
         Line hueso1 = new Line(5, 15, 10, 18);
         hueso1.setStroke(Color.web("#666666"));
         hueso1.setStrokeWidth(2);
@@ -303,13 +303,13 @@ public class GestorVisualizacion {
     public static Group crearMarcaTurno() {
         Group grupo = new Group();
 
-        // Punto rojo central
+
         Circle punto = new Circle(15, 15, 4);
         punto.setFill(Color.web("#ff3333"));
         punto.setStroke(Color.web("#cc0000"));
         punto.setStrokeWidth(1);
 
-        // Cruz dorada (retícula)
+
         Line linea1 = new Line(15, 8, 15, 22);
         linea1.setStroke(Color.web("#ffaa00"));
         linea1.setStrokeWidth(1);
@@ -320,7 +320,7 @@ public class GestorVisualizacion {
         linea2.setStrokeWidth(1);
         linea2.setOpacity(0.7);
 
-        // Anillo pulsante (círculo vacío)
+
         Circle anillo = new Circle(15, 15, 10);
         anillo.setFill(Color.TRANSPARENT);
         anillo.setStroke(Color.web("#ffaa00"));

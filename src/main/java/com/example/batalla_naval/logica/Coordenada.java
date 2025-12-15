@@ -1,46 +1,81 @@
-package com.example.batalla_naval.logica; // paquete donde se ubican las clases de lógica
+package com.example.batalla_naval.logica;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Coordenada implements Serializable { // clase simple para guardar fila y columna
-    private final int fila; // almacena la fila de la celda
-    private final int columna; // almacena la columna de la celda
+/**
+ * Representa una coordenada en el tablero de Batalla Naval.
+ */
+public class Coordenada implements Serializable {
+    private final int fila;
+    private final int columna;
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public Coordenada(int fila, int columna) { // constructor que recibe fila y columna
-        this.fila = fila; // asigna la fila recibida
-        this.columna = columna; // asigna la columna recibida
-    } // cierra el constructor
+    /**
+     * Crea una coordenada con fila y columna específicas.
+     *
+     * @param fila índice de fila.
+     * @param columna índice de columna.
+     */
+    public Coordenada(int fila, int columna) {
+        this.fila = fila;
+        this.columna = columna;
+    }
 
-    public int getFila() { // getter para la fila
-        return fila; // devuelve la fila almacenada
-    } // cierra el método getFila
+    /**
+     * Devuelve la fila asociada a la coordenada.
+     *
+     * @return número de fila.
+     */
+    public int getFila() {
+        return fila;
+    }
 
-    public int getColumna() { // getter para la columna
-        return columna; // devuelve la columna almacenada
-    } // cierra el método getColumna
+    /**
+     * Devuelve la columna asociada a la coordenada.
+     *
+     * @return número de columna.
+     */
+    public int getColumna() {
+        return columna;
+    }
 
-    @Override // indica que sobrescribimos equals
-    public boolean equals(Object obj) { // compara coordenadas
-        if (this == obj) { // si es la misma referencia
-            return true; // devuelve verdadero
-        } // cierra if
-        if (obj == null || getClass() != obj.getClass()) { // valida tipo y nulidad
-            return false; // devuelve falso si no coincide
-        } // cierra if
-        Coordenada that = (Coordenada) obj; // convierte el objeto a Coordenada
-        return fila == that.fila && columna == that.columna; // compara fila y columna
-    } // cierra equals
+    /**
+     * Compara la coordenada con otro objeto.
+     *
+     * @param obj objeto a comparar.
+     * @return true si representan la misma posición.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Coordenada that = (Coordenada) obj;
+        return fila == that.fila && columna == that.columna;
+    }
 
-    @Override // indica que sobrescribimos hashCode
-    public int hashCode() { // genera código hash
-        return 31 * fila + columna; // calcula un hash sencillo
-    } // cierra hashCode
+    /**
+     * Calcula el código hash basado en fila y columna.
+     *
+     * @return valor hash.
+     */
+    @Override
+    public int hashCode() {
+        return 31 * fila + columna;
+    }
 
-    @Override // sobrescribe toString para depuración
-    public String toString() { // construye texto de coordenada
-        return "(" + fila + "," + columna + ")"; // arma la representación
-    } // cierra toString
-} // cierra la clase Coordenada
+    /**
+     * Representación textual de la coordenada.
+     *
+     * @return texto en formato (fila,columna).
+     */
+    @Override
+    public String toString() {
+        return "(" + fila + "," + columna + ")";
+    }
+}

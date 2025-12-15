@@ -1,70 +1,108 @@
-package com.example.batalla_naval.logica; // paquete de la clase Celda
+package com.example.batalla_naval.logica;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-public class Celda implements Serializable { // clase que representa una casilla del tablero
-    private final Coordenada coordenada; // guarda la ubicación de la celda
-    private Barco barco; // referencia al barco que ocupa la celda o null
-    private boolean fueAtacada; // indica si ya se disparó a la celda
-    private EnumEstadoCelda estado; // estado actual de la celda
+/**
+ * Clase Celda de la aplicación Batalla Naval.
+ */
+public class Celda implements Serializable {
+    private final Coordenada coordenada;
+    private Barco barco;
+    private boolean fueAtacada;
+    private EnumEstadoCelda estado;
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public Celda(Coordenada coordenada) { // constructor que recibe la coordenada
-        this.coordenada = coordenada; // asigna la coordenada
-        this.fueAtacada = false; // marca que inicialmente no ha sido atacada
-        this.estado = EnumEstadoCelda.SIN_DISPARO; // estado inicial sin disparo
-    } // cierra el constructor
+/**
+ * Descripción para Celda.
+ * @param coordenada parámetro de entrada.
+ */
+    public Celda(Coordenada coordenada) {
+        this.coordenada = coordenada;
+        this.fueAtacada = false;
+        this.estado = EnumEstadoCelda.SIN_DISPARO;
+    }
 
-    public Coordenada getCoordenada() { // getter de coordenada
-        return coordenada; // devuelve la coordenada almacenada
-    } // cierra getCoordenada
+/**
+ * Descripción para getCoordenada.
+ * @return valor resultante.
+ */
+    public Coordenada getCoordenada() {
+        return coordenada;
+    }
 
-    public Barco getBarco() { // getter del barco
-        return barco; // devuelve el barco o null
-    } // cierra getBarco
+/**
+ * Descripción para getBarco.
+ * @return valor resultante.
+ */
+    public Barco getBarco() {
+        return barco;
+    }
 
-    public void setBarco(Barco barco) { // setter para asignar barco
-        this.barco = barco; // guarda la referencia del barco
-    } // cierra setBarco
+/**
+ * Descripción para setBarco.
+ * @param barco parámetro de entrada.
+ */
+    public void setBarco(Barco barco) {
+        this.barco = barco;
+    }
 
-    public boolean isFueAtacada() { // indica si la celda ya fue atacada
-        return fueAtacada; // devuelve el valor del indicador
-    } // cierra isFueAtacada
+/**
+ * Descripción para isFueAtacada.
+ * @return valor resultante.
+ */
+    public boolean isFueAtacada() {
+        return fueAtacada;
+    }
 
-    public EnumEstadoCelda getEstado() { // getter del estado de la celda
-        return estado; // devuelve el estado actual
-    } // cierra getEstado
+/**
+ * Descripción para getEstado.
+ * @return valor resultante.
+ */
+    public EnumEstadoCelda getEstado() {
+        return estado;
+    }
 
-    public EnumResultadoDisparo recibirDisparo() { // procesa un disparo sobre la celda
-        fueAtacada = true; // marca que ya fue atacada
-        if (barco == null) { // si no hay barco
-            estado = EnumEstadoCelda.AGUA; // el estado queda en agua
-            return EnumResultadoDisparo.AGUA; // retorna agua como resultado
-        } // cierra if
-        barco.registrarImpacto(this); // notifica al barco el impacto
-        if (barco.estaHundido()) { // si el barco queda hundido
-            estado = EnumEstadoCelda.HUNDIDO; // marca la celda como hundida
-            return EnumResultadoDisparo.HUNDIDO; // retorna hundido
-        } else { // si solo fue tocado
-            estado = EnumEstadoCelda.TOCADO; // actualiza estado a tocado
-            return EnumResultadoDisparo.TOCADO; // retorna tocado
-        } // cierra else
-    } // cierra recibirDisparo
+/**
+ * Descripción para recibirDisparo.
+ * @return valor resultante.
+ */
+    public EnumResultadoDisparo recibirDisparo() {
+        fueAtacada = true;
+        if (barco == null) {
+            estado = EnumEstadoCelda.AGUA;
+            return EnumResultadoDisparo.AGUA;
+        }
+        barco.registrarImpacto(this);
+        if (barco.estaHundido()) {
+            estado = EnumEstadoCelda.HUNDIDO;
+            return EnumResultadoDisparo.HUNDIDO;
+        } else {
+            estado = EnumEstadoCelda.TOCADO;
+            return EnumResultadoDisparo.TOCADO;
+        }
+    }
 
-    public void marcarHundidoCompleto() { // método para marcar la celda como hundida cuando el barco completo cayó
-        estado = EnumEstadoCelda.HUNDIDO; // fuerza el estado a hundido
-    } // cierra marcarHundidoCompleto
+/**
+ * Descripción para marcarHundidoCompleto.
+ */
+    public void marcarHundidoCompleto() {
+        estado = EnumEstadoCelda.HUNDIDO;
+    }
 
-    public void aplicarResultado(EnumResultadoDisparo resultado) { // método auxiliar para tableros sin barcos
-        fueAtacada = true; // marca la celda como atacada
-        if (resultado == EnumResultadoDisparo.AGUA) { // si fue agua
-            estado = EnumEstadoCelda.AGUA; // estado agua
-        } else if (resultado == EnumResultadoDisparo.TOCADO) { // si fue tocado
-            estado = EnumEstadoCelda.TOCADO; // estado tocado
-        } else { // en otro caso
-            estado = EnumEstadoCelda.HUNDIDO; // estado hundido
-        } // cierra if
-    } // cierra aplicarResultado
-} // cierra la clase Celda
+/**
+ * Descripción para aplicarResultado.
+ * @param resultado parámetro de entrada.
+ */
+    public void aplicarResultado(EnumResultadoDisparo resultado) {
+        fueAtacada = true;
+        if (resultado == EnumResultadoDisparo.AGUA) {
+            estado = EnumEstadoCelda.AGUA;
+        } else if (resultado == EnumResultadoDisparo.TOCADO) {
+            estado = EnumEstadoCelda.TOCADO;
+        } else {
+            estado = EnumEstadoCelda.HUNDIDO;
+        }
+    }
+}

@@ -1,26 +1,38 @@
-package com.example.batalla_naval.logica; // paquete de la fábrica de portaaviones
+package com.example.batalla_naval.logica;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-public class FabricaPortaaviones extends FabricaBarcos implements Serializable { // ⭐⭐ NUEVA: fábrica concreta específica para portaaviones
+/**
+ * Fábrica concreta responsable de crear portaaviones.
+ */
+public class FabricaPortaaviones extends FabricaBarcos implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Override // implementación del método factory abstracto
-    public Barco crearBarco() { // crea EXCLUSIVAMENTE un portaaviones
-        return new Portaaviones(); // retorna una instancia concreta de Portaaviones
-    } // cierra crearBarco
+    /**
+     * Crea un portaaviones.
+     *
+     * @return nueva instancia de Portaaviones.
+     */
+    @Override
+    public Barco crearBarco() {
+        return new Portaaviones();
+    }
 
-    @Override // sobrescribe el método hook para añadir funcionalidad específica
+    /**
+     * Configura los elementos básicos y añade ajustes propios del portaaviones.
+     */
+    @Override
     public void configurarBarcoBase() {
-        super.configurarBarcoBase(); // llama a la implementación de la clase padre
-        System.out.println("🛫 Añadiendo pista de aterrizaje para aviones...");
-        System.out.println("🚁 Instalando hangares y sistemas de catapulta...");
-    } // cierra configurarBarcoBase
+        super.configurarBarcoBase();
+        configurarPortaavionesEspecial();
+    }
 
-    // ⭐⭐ MÉTODO ESPECÍFICO para esta fábrica
+    /**
+     * Realiza ajustes adicionales exclusivos del portaaviones.
+     */
     public void configurarPortaavionesEspecial() {
-        System.out.println("🎯 Configurando sistemas de defensa antiaérea...");
-    } // cierra configurarPortaavionesEspecial
-} // cierra la clase FabricaPortaaviones
+        System.out.println("🛩️ Configurando pista de despegue y hangares...");
+    }
+}

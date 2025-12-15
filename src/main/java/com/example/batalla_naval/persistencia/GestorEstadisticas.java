@@ -1,20 +1,24 @@
 package com.example.batalla_naval.persistencia;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * Clase GestorEstadisticas de la aplicación Batalla Naval.
+ */
 public class GestorEstadisticas {
     private static final String ARCHIVO_STATS = "estadisticas.txt";
     private static final DateTimeFormatter FORMATO_FECHA =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    // Clase interna para modelar una estadística
+
     public static class Estadistica {
         public String nickname;
         public int barcosHundidos;
         public LocalDateTime fecha;
-        public long tiempoPartida; // en segundos
+        public long tiempoPartida;
 
         public Estadistica(String nickname, int barcosHundidos,
                            LocalDateTime fecha, long tiempoPartida) {
@@ -25,6 +29,10 @@ public class GestorEstadisticas {
         }
 
         @Override
+/**
+ * Descripción para toString.
+ * @return valor resultante.
+ */
         public String toString() {
             return String.format("%s | Barcos: %d | Fecha: %s | Tiempo: %dmin",
                     nickname, barcosHundidos,
@@ -32,7 +40,7 @@ public class GestorEstadisticas {
         }
     }
 
-    // Guardar una nueva estadística
+
     public static synchronized void guardarEstadistica(String nickname,
                                                        int barcosHundidos,
                                                        long tiempoPartida) {
@@ -54,7 +62,11 @@ public class GestorEstadisticas {
         }
     }
 
-    // Cargar todas las estadísticas
+
+/**
+ * Descripción para cargarEstadisticas.
+ * @return valor resultante.
+ */
     public static List<Estadistica> cargarEstadisticas() {
         List<Estadistica> estadisticas = new ArrayList<>();
         File archivo = new File(ARCHIVO_STATS);
@@ -90,7 +102,11 @@ public class GestorEstadisticas {
         return estadisticas;
     }
 
-    // Obtener top 5 mejores jugadores (más barcos hundidos)
+
+/**
+ * Descripción para obtenerTop5.
+ * @return valor resultante.
+ */
     public static List<Estadistica> obtenerTop5() {
         List<Estadistica> todas = cargarEstadisticas();
         return todas.stream()
@@ -99,7 +115,11 @@ public class GestorEstadisticas {
                 .toList();
     }
 
-    // Obtener promedio de barcos hundidos
+
+/**
+ * Descripción para obtenerPromedioBarcosHundidos.
+ * @return valor resultante.
+ */
     public static double obtenerPromedioBarcosHundidos() {
         List<Estadistica> todas = cargarEstadisticas();
         if (todas.isEmpty()) return 0;
@@ -109,7 +129,10 @@ public class GestorEstadisticas {
                 .orElse(0);
     }
 
-    // Limpiar archivo de estadísticas (para testing)
+
+/**
+ * Descripción para limpiarEstadisticas.
+ */
     public static void limpiarEstadisticas() {
         File archivo = new File(ARCHIVO_STATS);
         if (archivo.delete()) {
@@ -117,7 +140,10 @@ public class GestorEstadisticas {
         }
     }
 
-    // Imprimir todas las estadísticas (para debugging)
+
+/**
+ * Descripción para imprimirTodasLasEstadisticas.
+ */
     public static void imprimirTodasLasEstadisticas() {
         System.out.println("\n=== ESTADÍSTICAS GUARDADAS ===");
         List<Estadistica> todas = cargarEstadisticas();

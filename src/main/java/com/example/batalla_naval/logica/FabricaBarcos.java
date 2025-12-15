@@ -1,25 +1,38 @@
-package com.example.batalla_naval.logica; // paquete de la fábrica de barcos
+package com.example.batalla_naval.logica;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-public abstract class FabricaBarcos implements Serializable { // ⭐⭐ MODIFICADO: ahora es abstracta (Factory Method)
+/**
+ * Define la interfaz común para las fábricas de barcos utilizando el patrón Factory Method.
+ */
+public abstract class FabricaBarcos implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    // ⭐⭐ MÉTODO FACTORY ABSTRACTO (Factory Method)
-    public abstract Barco crearBarco(); // ⭐⭐ SIN PARÁMETROS: cada fábrica concreta crea UN tipo específico
+    /**
+     * Crea la instancia concreta del barco definido por cada subclase.
+     *
+     * @return barco específico producido por la fábrica.
+     */
+    public abstract Barco crearBarco();
 
-    // ⭐⭐ MÉTODO HOOK para configuración común
+    /**
+     * Configura aspectos básicos compartidos por todas las embarcaciones.
+     */
     public void configurarBarcoBase() {
         System.out.println("⚙️ Configurando características base del barco...");
-    } // cierra configurarBarcoBase
+    }
 
-    // ⭐⭐ MÉTODO TEMPLATE para proceso completo de creación
+    /**
+     * Ejecuta el proceso completo de creación del barco aplicando la configuración común.
+     *
+     * @return barco inicializado y listo para usarse.
+     */
     public final Barco crearBarcoCompleto() {
-        configurarBarcoBase(); // paso común a todos los barcos
-        Barco barco = crearBarco(); // paso variable (implementado por subclases)
+        configurarBarcoBase();
+        Barco barco = crearBarco();
         System.out.println("✅ Barco creado: " + barco.getNombre());
-        return barco; // retorna el barco creado
-    } // cierra crearBarcoCompleto
-} // cierra la clase FabricaBarcos
+        return barco;
+    }
+}

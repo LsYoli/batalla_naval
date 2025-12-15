@@ -1,152 +1,232 @@
-package com.example.batalla_naval.logica; // paquete de la clase Maquina
+package com.example.batalla_naval.logica;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayDeque; // importa ArrayDeque para la deque
-import java.util.ArrayList; // importa ArrayList para la flota
-import java.util.Deque; // interfaz de deque
-import java.util.HashSet; // conjunto para coordenadas ya disparadas
-import java.util.List; // interfaz de lista
-import java.util.Queue; // interfaz de cola
-import java.util.LinkedList; // implementación de cola
-import java.util.Set; // interfaz de conjunto
-import java.util.Stack; // pila para historial
-import java.util.Random; // generador aleatorio
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Set;
+import java.util.Stack;
 
-public class Maquina implements Serializable { // clase que representa a la máquina
-    private final Tablero tableroPosicion; // tablero donde se ubican los barcos de la máquina
-    private final Tablero tableroRegistroDisparos; // tablero donde se registran disparos contra el jugador
-    private final List<Barco> flota; // flota de barcos de la máquina
-    private final Set<Coordenada> celdasYaDisparadas; // conjunto de celdas usadas para no repetir
-    private final Queue<Coordenada> colaDisparos; // cola que alimenta la estrategia simple
-    private final Deque<Coordenada> celdasVecinas; // deque para almacenar vecinos tras un impacto
-    private final ContextoDisparo contextoDisparo; // ⭐⭐ CAMBIO: Contexto para el patrón Strategy
-    private final Stack<Disparo> historial; // historial de disparos en pila
-    private int contadorDisparos; // contador para numerar disparos
+/**
+ * Representa al oponente controlado por la aplicación y gestiona su estrategia de disparos.
+ */
+public class Maquina implements Serializable {
+    private final Tablero tableroPosicion;
+    private final Tablero tableroRegistroDisparos;
+    private final List<Barco> flota;
+    private final Set<Coordenada> celdasYaDisparadas;
+    private final Queue<Coordenada> colaDisparos;
+    private final Deque<Coordenada> celdasVecinas;
+    private final ContextoDisparo contextoDisparo;
+    private final Stack<Disparo> historial;
+    private int contadorDisparos;
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public Maquina() { // constructor sin parámetros
-        tableroPosicion = new Tablero(); // crea el tablero de posición
-        tableroRegistroDisparos = new Tablero(); // crea el tablero donde se registran disparos contra el jugador
-        flota = new ArrayList<>(); // inicializa la flota con ArrayList
-        celdasYaDisparadas = new HashSet<>(); // conjunto para recordar disparos
-        colaDisparos = new LinkedList<>(); // cola simple para gestionar coordenadas
-        celdasVecinas = new ArrayDeque<>(); // deque para guardar vecinos de impactos
-        contextoDisparo = new ContextoDisparo(); // ⭐⭐ CAMBIO: crea el contexto en lugar de la estrategia directa
-        historial = new Stack<>(); // crea el historial de disparos
-        contadorDisparos = 0; // inicia el contador de disparos
-    } // cierra el constructor
+    /**
+     * Inicializa la máquina con tableros vacíos y un contexto de disparo configurable.
+     */
+    public Maquina() {
+        tableroPosicion = new Tablero();
+        tableroRegistroDisparos = new Tablero();
+        flota = new ArrayList<>();
+        celdasYaDisparadas = new HashSet<>();
+        colaDisparos = new LinkedList<>();
+        celdasVecinas = new ArrayDeque<>();
+        contextoDisparo = new ContextoDisparo();
+        historial = new Stack<>();
+        contadorDisparos = 0;
+    }
 
-    public Tablero getTableroPosicion() { // getter del tablero de posición
-        return tableroPosicion; // devuelve la referencia
-    } // cierra getTableroPosicion
+    /**
+     * Obtiene el tablero donde se posicionan los barcos de la máquina.
+     *
+     * @return tablero de posición de la máquina.
+     */
+    public Tablero getTableroPosicion() {
+        return tableroPosicion;
+    }
 
-    public Tablero getTableroRegistroDisparos() { // getter del tablero de registro de disparos
-        return tableroRegistroDisparos; // devuelve la referencia
-    } // cierra getTableroRegistroDisparos
+    /**
+     * Obtiene el tablero donde se registran los disparos realizados contra el jugador.
+     *
+     * @return tablero de registro de disparos.
+     */
+    public Tablero getTableroRegistroDisparos() {
+        return tableroRegistroDisparos;
+    }
 
-    public List<Barco> getFlota() { // getter de flota
-        return flota; // devuelve la flota
-    } // cierra getFlota
+    /**
+     * Devuelve la flota actual de la máquina.
+     *
+     * @return lista de barcos posicionados.
+     */
+    public List<Barco> getFlota() {
+        return flota;
+    }
 
-    public Set<Coordenada> getCeldasYaDisparadas() { // getter de celdas ya atacadas
-        return celdasYaDisparadas; // retorna el conjunto
-    } // cierra getCeldasYaDisparadas
+    /**
+     * Celdas en las que la máquina ya ha disparado.
+     *
+     * @return conjunto de coordenadas utilizadas.
+     */
+    public Set<Coordenada> getCeldasYaDisparadas() {
+        return celdasYaDisparadas;
+    }
 
-    public Stack<Disparo> getHistorial() { // getter del historial
-        return historial; // retorna la pila
-    } // cierra getHistorial
+    /**
+     * Historial de disparos realizados por la máquina.
+     *
+     * @return pila de disparos.
+     */
+    public Stack<Disparo> getHistorial() {
+        return historial;
+    }
 
-    public ContextoDisparo getContextoDisparo() { // ⭐⭐ NUEVO: getter del contexto
+    /**
+     * Devuelve el contexto que administra la estrategia de disparo actual.
+     *
+     * @return contexto de estrategia.
+     */
+    public ContextoDisparo getContextoDisparo() {
         return contextoDisparo;
-    } // cierra getContextoDisparo
+    }
 
-    public void prepararFlotaAleatoria() { // coloca la flota de forma aleatoria usando Factory Method
-        agregarBarcos(TipoBarco.PORTAAVIONES, 1); // agrega un portaaviones usando Factory Method
-        agregarBarcos(TipoBarco.SUBMARINO, 2); // agrega dos submarinos usando Factory Method
-        agregarBarcos(TipoBarco.DESTRUCTOR, 3); // agrega tres destructores usando Factory Method
-        agregarBarcos(TipoBarco.FRAGATA, 4); // agrega cuatro fragatas usando Factory Method
-    } // cierra prepararFlotaAleatoria
+    /**
+     * Coloca la flota de manera aleatoria utilizando las fábricas disponibles.
+     */
+    public void prepararFlotaAleatoria() {
+        agregarBarcos(TipoBarco.PORTAAVIONES, 1);
+        agregarBarcos(TipoBarco.SUBMARINO, 2);
+        agregarBarcos(TipoBarco.DESTRUCTOR, 3);
+        agregarBarcos(TipoBarco.FRAGATA, 4);
+    }
 
-    private void agregarBarcos(TipoBarco tipo, int cantidad) { // método auxiliar para agregar barcos usando Factory Method
-        Random random = new Random(); // generador aleatorio simple
-        int colocados = 0; // contador de barcos colocados
-        while (colocados < cantidad) { // repite hasta colocar la cantidad requerida
-            // ⭐⭐ USO DEL FACTORY METHOD: obtener fábrica concreta y crear barco
-            FabricaBarcos fabrica = obtenerFabricaPorTipo(tipo); // obtiene la fábrica concreta para el tipo
-            Barco barco = fabrica.crearBarcoCompleto(); // usa el método template del Factory Method
-            EnumOrientacion orientacion = random.nextBoolean() ? EnumOrientacion.HORIZONTAL : EnumOrientacion.VERTICAL; // elige orientación aleatoria
-            int fila = random.nextInt(10); // elige fila aleatoria
-            int col = random.nextInt(10); // elige columna aleatoria
-            try { // bloque de intento
-                tableroPosicion.colocarBarco(barco, new Coordenada(fila, col), orientacion); // intenta colocar el barco
-                flota.add(barco); // agrega el barco a la flota si se pudo colocar
-                colocados++; // incrementa contador de colocados
-            } catch (PosicionInvalidaException e) { // si la posición no sirve
-                // no incrementa colocados y vuelve a intentar // comentario aclaratorio
-            } // cierra catch
-        } // cierra while
-    } // cierra agregarBarcos
+    /**
+     * Agrega barcos del tipo indicado intentando ubicarlos aleatoriamente.
+     *
+     * @param tipo tipo de barco a crear.
+     * @param cantidad cantidad de barcos a colocar.
+     */
+    private void agregarBarcos(TipoBarco tipo, int cantidad) {
+        Random random = new Random();
+        int colocados = 0;
+        while (colocados < cantidad) {
+            FabricaBarcos fabrica = obtenerFabricaPorTipo(tipo);
+            Barco barco = fabrica.crearBarcoCompleto();
+            EnumOrientacion orientacion = random.nextBoolean() ? EnumOrientacion.HORIZONTAL : EnumOrientacion.VERTICAL;
+            int fila = random.nextInt(10);
+            int col = random.nextInt(10);
+            try {
+                tableroPosicion.colocarBarco(barco, new Coordenada(fila, col), orientacion);
+                flota.add(barco);
+                colocados++;
+            } catch (PosicionInvalidaException e) {
+            }
+        }
+    }
 
-    // ⭐⭐ NUEVO MÉTODO: Obtener la fábrica concreta según el tipo de barco (Factory Method)
-    private FabricaBarcos obtenerFabricaPorTipo(TipoBarco tipo) { // selecciona la implementación concreta del Factory Method
-        switch (tipo) { // evalúa el tipo de barco
-            case PORTAAVIONES: // si es portaaviones
-                return new FabricaPortaaviones(); // retorna fábrica concreta para portaaviones
-            case SUBMARINO: // si es submarino
-                return new FabricaSubmarino(); // retorna fábrica concreta para submarinos
-            case DESTRUCTOR: // si es destructor
-                return new FabricaDestructor(); // retorna fábrica concreta para destructores
-            case FRAGATA: // si es fragata
-                return new FabricaFragata(); // retorna fábrica concreta para fragatas
-            default: // por defecto
-                throw new IllegalArgumentException("Tipo de barco no soportado: " + tipo); // lanza excepción
-        } // cierra switch
-    } // cierra obtenerFabricaPorTipo
+    /**
+     * Obtiene la fábrica concreta correspondiente al tipo solicitado.
+     *
+     * @param tipo tipo de barco requerido.
+     * @return implementación de fábrica adecuada.
+     */
+    private FabricaBarcos obtenerFabricaPorTipo(TipoBarco tipo) {
+        switch (tipo) {
+            case PORTAAVIONES:
+                return new FabricaPortaaviones();
+            case SUBMARINO:
+                return new FabricaSubmarino();
+            case DESTRUCTOR:
+                return new FabricaDestructor();
+            case FRAGATA:
+                return new FabricaFragata();
+            default:
+                throw new IllegalArgumentException("Tipo de barco no soportado: " + tipo);
+        }
+    }
 
-    public EnumResultadoDisparo disparar(JugadorHumano jugador) { // realiza un disparo contra el jugador humano
-        contadorDisparos++; // incrementa contador
-        Coordenada objetivo = contextoDisparo.ejecutarEstrategia(this); // ⭐⭐ CAMBIO: usa el contexto para ejecutar la estrategia
-        if (objetivo == null) { // si no hay coordenada
-            return EnumResultadoDisparo.AGUA; // retorna agua por defecto
-        } // cierra if
-        EnumResultadoDisparo resultado = jugador.getTableroPosicion().registrarDisparo(objetivo); // dispara al tablero del jugador
-        tableroRegistroDisparos.obtenerCelda(objetivo).aplicarResultado(resultado); // marca el disparo en el tablero de registro con el resultado real
-        historial.push(new Disparo(contadorDisparos, "Maquina", objetivo, resultado)); // agrega el disparo al historial
-        if (resultado == EnumResultadoDisparo.TOCADO) { // si toca un barco
-            cargarVecinos(objetivo); // carga vecinos en la deque para futura estrategia
-        } // cierra if
-        return resultado; // devuelve el resultado
-    } // cierra disparar
+    /**
+     * Ejecuta un disparo contra el jugador humano siguiendo la estrategia configurada.
+     *
+     * @param jugador jugador objetivo.
+     * @return resultado del disparo realizado.
+     */
+    public EnumResultadoDisparo disparar(JugadorHumano jugador) {
+        contadorDisparos++;
+        Coordenada objetivo = contextoDisparo.ejecutarEstrategia(this);
+        if (objetivo == null) {
+            return EnumResultadoDisparo.AGUA;
+        }
+        EnumResultadoDisparo resultado = jugador.getTableroPosicion().registrarDisparo(objetivo);
+        tableroRegistroDisparos.obtenerCelda(objetivo).aplicarResultado(resultado);
+        historial.push(new Disparo(contadorDisparos, "Maquina", objetivo, resultado));
+        if (resultado == EnumResultadoDisparo.TOCADO) {
+            cargarVecinos(objetivo);
+        }
+        return resultado;
+    }
 
-    private void cargarVecinos(Coordenada base) { // carga celdas vecinas alrededor de un impacto
-        int fila = base.getFila(); // obtiene la fila base
-        int col = base.getColumna(); // obtiene la columna base
-        agregarVecino(fila + 1, col); // agrega vecino inferior
-        agregarVecino(fila - 1, col); // agrega vecino superior
-        agregarVecino(fila, col + 1); // agrega vecino derecha
-        agregarVecino(fila, col - 1); // agrega vecino izquierda
-    } // cierra cargarVecinos
+    /**
+     * Carga las celdas adyacentes al último impacto para priorizar los siguientes disparos.
+     *
+     * @param base coordenada que resultó en impacto.
+     */
+    private void cargarVecinos(Coordenada base) {
+        int fila = base.getFila();
+        int col = base.getColumna();
+        agregarVecino(fila + 1, col);
+        agregarVecino(fila - 1, col);
+        agregarVecino(fila, col + 1);
+        agregarVecino(fila, col - 1);
+    }
 
-    private void agregarVecino(int fila, int col) { // intenta agregar un vecino válido a la deque
-        if (fila >= 0 && fila < 10 && col >= 0 && col < 10) { // verifica límites
-            Coordenada posible = new Coordenada(fila, col); // crea la coordenada
-            if (!celdasYaDisparadas.contains(posible)) { // evita repetidos
-                celdasVecinas.offer(posible); // agrega al final de la deque
-            } // cierra if
-        } // cierra if de límites
-    } // cierra agregarVecino
+    /**
+     * Intenta encolar una coordenada vecina si está dentro del tablero y no se ha usado.
+     *
+     * @param fila fila candidata.
+     * @param col columna candidata.
+     */
+    private void agregarVecino(int fila, int col) {
+        if (fila >= 0 && fila < 10 && col >= 0 && col < 10) {
+            Coordenada posible = new Coordenada(fila, col);
+            if (!celdasYaDisparadas.contains(posible)) {
+                celdasVecinas.offer(posible);
+            }
+        }
+    }
 
-    public Deque<Coordenada> getCeldasVecinas() { // getter de deque de vecinos
-        return celdasVecinas; // retorna la deque
-    } // cierra getCeldasVecinas
+    /**
+     * Devuelve las coordenadas vecinas pendientes de procesar.
+     *
+     * @return deque con celdas candidatas.
+     */
+    public Deque<Coordenada> getCeldasVecinas() {
+        return celdasVecinas;
+    }
 
-    public Queue<Coordenada> getColaDisparos() { // getter de la cola base
-        return colaDisparos; // retorna la cola
-    } // cierra getColaDisparos
+    /**
+     * Devuelve la cola utilizada por estrategias simples de disparo.
+     *
+     * @return cola de disparos pendientes.
+     */
+    public Queue<Coordenada> getColaDisparos() {
+        return colaDisparos;
+    }
 
-    public void setEstrategia(EstrategiaDisparo estrategia) { // permite cambiar la estrategia en tiempo de ejecución
-        contextoDisparo.setEstrategia(estrategia); // ⭐⭐ CAMBIO: delega al contexto
-    } // cierra setEstrategia
-} // cierra la clase Maquina
+    /**
+     * Permite reemplazar la estrategia de disparo utilizada por la máquina.
+     *
+     * @param estrategia implementación concreta de estrategia.
+     */
+    public void setEstrategia(EstrategiaDisparo estrategia) {
+        contextoDisparo.setEstrategia(estrategia);
+    }
+}

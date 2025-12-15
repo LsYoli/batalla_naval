@@ -1,6 +1,5 @@
 package com.example.batalla_naval.persistencia;
 
-
 import com.example.batalla_naval.logica.*;
 import java.io.*;
 import java.time.LocalDateTime;
@@ -21,7 +20,7 @@ public class GestorPartidaAutomatico {
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     static {
-        // Crear directorio si no existe
+
         File directorio = new File(DIRECTORIO_BASE);
         if (!directorio.exists()) {
             directorio.mkdirs();
@@ -40,7 +39,7 @@ public class GestorPartidaAutomatico {
     public static synchronized boolean guardarPartidaActiva(FachadaJuego fachada,
                                                             String nicknamejugador) {
         try {
-            // Guardar serializable del estado del juego
+
             String rutaPartida = DIRECTORIO_BASE + ARCHIVO_PARTIDA_ACTIVA;
             try (ObjectOutputStream oos = new ObjectOutputStream(
                     new FileOutputStream(rutaPartida))) {
@@ -48,7 +47,7 @@ public class GestorPartidaAutomatico {
                 oos.flush();
             }
 
-            // Guardar información del jugador en archivo plano CON ENCABEZADOS
+
             guardarEstadoJugador(nicknamejugador, fachada);
 
             System.out.println("✓ Partida automáticamente guardada: " +
@@ -74,21 +73,20 @@ public class GestorPartidaAutomatico {
         try (FileWriter fw = new FileWriter(DIRECTORIO_BASE + ARCHIVO_ESTADO_JUGADOR);
              BufferedWriter bw = new BufferedWriter(fw)) {
 
-            // ⭐⭐ SIEMPRE escribir encabezados (sobrescribe archivo completo)
             bw.write("nickname|barcosJugadorHundidos|barcosMaquinaHundidos|totalDisparos|partidaIniciada|estado|fechaGuardado");
             bw.newLine();
 
-            // Contar barcos hundidos del jugador (disparos exitosos)
+
             long barcosHundidosJugador = fachada.historialJugador().stream()
                     .filter(d -> d.getResultado() == EnumResultadoDisparo.HUNDIDO)
                     .count();
 
-            // Contar barcos hundidos de la máquina
+
             long barcosHundidosMaquina = fachada.historialMaquina().stream()
                     .filter(d -> d.getResultado() == EnumResultadoDisparo.HUNDIDO)
                     .count();
 
-            // Determinar estado de la partida
+
             String estadoPartida = "EN_JUEGO";
             if (fachada.verificarFinDePartida()) {
                 boolean ganoJugador = fachada.getMaquina().getTableroPosicion()
@@ -96,7 +94,7 @@ public class GestorPartidaAutomatico {
                 estadoPartida = ganoJugador ? "GANADA" : "PERDIDA";
             }
 
-            // Escribir línea con toda la información
+
             String linea = String.format("%s|%d|%d|%d|%b|%s|%s",
                     nickname,
                     barcosHundidosJugador,
@@ -164,13 +162,13 @@ public class GestorPartidaAutomatico {
             String linea;
             String ultimaLineaValida = null;
 
-            // Leer todas las líneas, ignorando encabezados
+
             while ((linea = br.readLine()) != null) {
-                // Saltar línea de encabezados
+
                 if (linea.startsWith("nickname|")) {
                     continue;
                 }
-                // Guardar la última línea válida (datos)
+
                 if (!linea.trim().isEmpty()) {
                     ultimaLineaValida = linea;
                 }
@@ -212,7 +210,7 @@ public class GestorPartidaAutomatico {
             return null;
         }
 
-        // Si es la línea de encabezados, retornar null
+
         if (lineaEstado.startsWith("nickname|")) {
             return null;
         }

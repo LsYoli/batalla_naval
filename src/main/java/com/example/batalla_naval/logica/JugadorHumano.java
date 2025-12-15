@@ -1,64 +1,104 @@
-package com.example.batalla_naval.logica; // paquete de la clase JugadorHumano
+package com.example.batalla_naval.logica;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList; // importa ArrayList para la flota
-import java.util.List; // importa List como interfaz
-import java.util.Stack; // importa Stack para historial de disparos
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
-public class JugadorHumano implements Serializable { // clase que modela al jugador humano
-    private final Tablero tableroPosicion; // tablero donde coloca sus barcos
-    private final Tablero tableroRegistroDisparos; // tablero donde se registran impactos sobre la máquina
-    private final List<Barco> flota; // lista de barcos del jugador
-    private final Stack<Disparo> historialDisparos; // pila con los disparos realizados
-    private EnumOrientacion orientacionActual; // orientación elegida para colocar
-    private int contadorDisparos; // contador para numerar disparos
+/**
+ * Clase JugadorHumano de la aplicación Batalla Naval.
+ */
+public class JugadorHumano implements Serializable {
+    private final Tablero tableroPosicion;
+    private final Tablero tableroRegistroDisparos;
+    private final List<Barco> flota;
+    private final Stack<Disparo> historialDisparos;
+    private EnumOrientacion orientacionActual;
+    private int contadorDisparos;
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public JugadorHumano() { // constructor sin parámetros
-        tableroPosicion = new Tablero(); // crea el tablero de posición usando ArrayList
-        tableroRegistroDisparos = new Tablero(); // crea tablero vacío para registrar disparos
-        flota = new ArrayList<>(); // inicializa la flota
-        historialDisparos = new Stack<>(); // crea la pila de disparos
-        orientacionActual = EnumOrientacion.HORIZONTAL; // orientación por defecto
-        contadorDisparos = 0; // inicia contador de disparos
-    } // cierra el constructor
+/**
+ * Descripción para JugadorHumano.
+ */
+    public JugadorHumano() {
+        tableroPosicion = new Tablero();
+        tableroRegistroDisparos = new Tablero();
+        flota = new ArrayList<>();
+        historialDisparos = new Stack<>();
+        orientacionActual = EnumOrientacion.HORIZONTAL;
+        contadorDisparos = 0;
+    }
 
-    public Tablero getTableroPosicion() { // getter del tablero de posición
-        return tableroPosicion; // retorna el tablero
-    } // cierra getTableroPosicion
+/**
+ * Descripción para getTableroPosicion.
+ * @return valor resultante.
+ */
+    public Tablero getTableroPosicion() {
+        return tableroPosicion;
+    }
 
-    public Tablero getTableroRegistroDisparos() { // getter del tablero de disparos
-        return tableroRegistroDisparos; // retorna el tablero de registro
-    } // cierra getTableroRegistroDisparos
+/**
+ * Descripción para getTableroRegistroDisparos.
+ * @return valor resultante.
+ */
+    public Tablero getTableroRegistroDisparos() {
+        return tableroRegistroDisparos;
+    }
 
-    public List<Barco> getFlota() { // getter de la flota
-        return flota; // devuelve la lista de barcos
-    } // cierra getFlota
+/**
+ * Descripción para getFlota.
+ * @return valor resultante.
+ */
+    public List<Barco> getFlota() {
+        return flota;
+    }
 
-    public Stack<Disparo> getHistorialDisparos() { // getter del historial
-        return historialDisparos; // retorna la pila de disparos
-    } // cierra getHistorialDisparos
+/**
+ * Descripción para getHistorialDisparos.
+ * @return valor resultante.
+ */
+    public Stack<Disparo> getHistorialDisparos() {
+        return historialDisparos;
+    }
 
-    public EnumOrientacion getOrientacionActual() { // getter de la orientación actual
-        return orientacionActual; // retorna la orientación guardada
-    } // cierra getOrientacionActual
+/**
+ * Descripción para getOrientacionActual.
+ * @return valor resultante.
+ */
+    public EnumOrientacion getOrientacionActual() {
+        return orientacionActual;
+    }
 
-    public void alternarOrientacion() { // cambia la orientación para colocar barcos
-        orientacionActual = orientacionActual == EnumOrientacion.HORIZONTAL ? EnumOrientacion.VERTICAL : EnumOrientacion.HORIZONTAL; // alterna entre horizontal y vertical
-    } // cierra alternarOrientacion
+/**
+ * Descripción para alternarOrientacion.
+ */
+    public void alternarOrientacion() {
+        orientacionActual = orientacionActual == EnumOrientacion.HORIZONTAL ? EnumOrientacion.VERTICAL : EnumOrientacion.HORIZONTAL;
+    }
 
-    public void colocarBarco(Barco barco, Coordenada inicio) throws PosicionInvalidaException { // coloca un barco en el tablero
-        tableroPosicion.colocarBarco(barco, inicio, orientacionActual); // delega en el tablero la colocación
-        flota.add(barco); // agrega el barco a la flota del jugador
-    } // cierra colocarBarco
+/**
+ * Descripción para colocarBarco.
+ * @param barco parámetro de entrada.
+ * @param inicio parámetro de entrada.
+ */
+    public void colocarBarco(Barco barco, Coordenada inicio) throws PosicionInvalidaException {
+        tableroPosicion.colocarBarco(barco, inicio, orientacionActual);
+        flota.add(barco);
+    }
 
-    public EnumResultadoDisparo disparar(Tablero tableroMaquina, Coordenada objetivo) { // dispara al tablero de la máquina
-        contadorDisparos++; // incrementa el contador de disparos
-        EnumResultadoDisparo resultado = tableroMaquina.registrarDisparo(objetivo); // registra el disparo en el tablero enemigo
-        tableroRegistroDisparos.obtenerCelda(objetivo).aplicarResultado(resultado); // marca la celda en el tablero de registro con el resultado real
-        historialDisparos.push(new Disparo(contadorDisparos, "Humano", objetivo, resultado)); // guarda el disparo en la pila
-        return resultado; // retorna el resultado obtenido
-    } // cierra disparar
-} // cierra la clase JugadorHumano
+/**
+ * Descripción para disparar.
+ * @param tableroMaquina parámetro de entrada.
+ * @param objetivo parámetro de entrada.
+ * @return valor resultante.
+ */
+    public EnumResultadoDisparo disparar(Tablero tableroMaquina, Coordenada objetivo) {
+        contadorDisparos++;
+        EnumResultadoDisparo resultado = tableroMaquina.registrarDisparo(objetivo);
+        tableroRegistroDisparos.obtenerCelda(objetivo).aplicarResultado(resultado);
+        historialDisparos.push(new Disparo(contadorDisparos, "Humano", objetivo, resultado));
+        return resultado;
+    }
+}

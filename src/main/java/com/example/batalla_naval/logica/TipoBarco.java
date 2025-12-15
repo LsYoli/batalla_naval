@@ -1,8 +1,15 @@
-package com.example.batalla_naval.logica; // paquete del enum que describe tipos de barcos
+package com.example.batalla_naval.logica;
 
-public enum TipoBarco { // enum con los barcos disponibles
-    PORTAAVIONES, // barco de tamaño 4
-    SUBMARINO, // barco de tamaño 3
-    DESTRUCTOR, // barco de tamaño 2
-    FRAGATA // barco de tamaño 1
-} // cierra el enum
+/**
+ * Tipos de embarcaciones disponibles en el juego y su tamaño asociado.
+ */
+public enum TipoBarco {
+    /** Portaaviones de tamaño cuatro. */
+    PORTAAVIONES,
+    /** Submarino de tamaño tres. */
+    SUBMARINO,
+    /** Destructor de tamaño dos. */
+    DESTRUCTOR,
+    /** Fragata de tamaño uno. */
+    FRAGATA
+}

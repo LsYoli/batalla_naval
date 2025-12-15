@@ -1,7 +1,13 @@
-package com.example.batalla_naval.logica; // paquete de la clase Fragata
+package com.example.batalla_naval.logica;
 
-public class Fragata extends Barco { // clase concreta para fragata
-    public Fragata() { // constructor sin parámetros
-        super(1, "Fragata"); // llama al padre con tamaño 1
-    } // cierra el constructor
-} // cierra la clase Fragata
+/**
+ * Clase Fragata de la aplicación Batalla Naval.
+ */
+public class Fragata extends Barco {
+/**
+ * Descripción para Fragata.
+ */
+    public Fragata() {
+        super(1, "Fragata");
+    }
+}

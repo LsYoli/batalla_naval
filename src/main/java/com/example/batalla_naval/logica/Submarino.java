@@ -1,7 +1,13 @@
-package com.example.batalla_naval.logica; // paquete de la clase Submarino
+package com.example.batalla_naval.logica;
 
-public class Submarino extends Barco { // clase concreta para submarino
-    public Submarino() { // constructor sin parámetros
-        super(3, "Submarino"); // llama al padre con tamaño 3
-    } // cierra el constructor
-} // cierra la clase Submarino
+/**
+ * Clase Submarino de la aplicación Batalla Naval.
+ */
+public class Submarino extends Barco {
+/**
+ * Descripción para Submarino.
+ */
+    public Submarino() {
+        super(3, "Submarino");
+    }
+}
